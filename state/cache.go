@@ -3,7 +3,7 @@ package state
 import (
 	"fmt"
 
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/terraform"
 )
 
 // CacheState is an implementation of the state interfaces that uses

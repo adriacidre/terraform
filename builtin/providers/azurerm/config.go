@@ -22,8 +22,8 @@ import (
 	mainStorage "github.com/Azure/azure-sdk-for-go/storage"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/hashicorp/terraform/terraform"
 	riviera "github.com/jen20/riviera/azure"
+	"github.com/r3labs/terraform/terraform"
 )
 
 // ArmClient contains the handles to all the specific Azure Resource Manager

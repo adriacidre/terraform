@@ -19,7 +19,7 @@ export PATH=$PATH:$HOME/terraform:$HOME/go/bin
 echo 'export PATH=$PATH:$HOME/terraform:$HOME/go/bin' >> .bashrc
 source .bashrc
 
-go get github.com/hashicorp/terraform
+go get github.com/r3labs/terraform
 
 git clone https://git.openstack.org/openstack-dev/devstack -b stable/mitaka
 cd devstack

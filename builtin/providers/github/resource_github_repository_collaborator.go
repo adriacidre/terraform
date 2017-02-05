@@ -2,7 +2,7 @@ package github
 
 import (
 	"github.com/google/go-github/github"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/r3labs/terraform/helper/schema"
 )
 
 func resourceGithubRepositoryCollaborator() *schema.Resource {

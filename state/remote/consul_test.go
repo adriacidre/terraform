@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hashicorp/terraform/helper/acctest"
+	"github.com/r3labs/terraform/helper/acctest"
 )
 
 func TestConsulClient_impl(t *testing.T) {

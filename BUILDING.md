@@ -29,7 +29,7 @@ the pre-requisite tools in place. The specifics of this VM are defined in the
 
 ```sh
 # clone the repository if needed
-git clone https://github.com/hashicorp/terraform.git
+git clone https://github.com/r3labs/terraform.git
 cd terraform
 
 # Spin up a fresh build VM
@@ -39,7 +39,7 @@ vagrant ssh
 
 # The Vagrantfile installs Go and configures the $GOPATH at /opt/gopath
 # The current "terraform" directory is then sync'd into the gopath
-cd /opt/gopath/src/github.com/hashicorp/terraform/
+cd /opt/gopath/src/github.com/r3labs/terraform/
 
 # Verify unit tests pass
 make test
@@ -53,4 +53,4 @@ After running these commands, you should have binaries for all supported
 platforms in the `pkg` folder.
 
 
-[1]: https://github.com/hashicorp/terraform#developing-terraform
+[1]: https://github.com/r3labs/terraform#developing-terraform

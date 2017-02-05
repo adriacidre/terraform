@@ -338,7 +338,7 @@ TF_ACC=1 go test ./builtin/providers/azurerm -v -run=TestAccAzureRMPublicIpStati
 === RUN   TestAccAzureRMPublicIpStatic_update
 --- PASS: TestAccAzureRMPublicIpStatic_update (177.48s)
 PASS
-ok      github.com/hashicorp/terraform/builtin/providers/azurerm    177.504s
+ok      github.com/r3labs/terraform/builtin/providers/azurerm    177.504s
 ```
 
 Entire resource test suites can be targeted by using the naming convention to
@@ -356,7 +356,7 @@ TF_ACC=1 go test ./builtin/providers/azurerm -v -run=TestAccAzureRMPublicIpStati
 === RUN   TestAccAzureRMPublicIpStatic_update
 --- PASS: TestAccAzureRMPublicIpStatic_update (180.63s)
 PASS
-ok      github.com/hashicorp/terraform/builtin/providers/azurerm    318.392s
+ok      github.com/r3labs/terraform/builtin/providers/azurerm    318.392s
 ```
 
 #### Writing an Acceptance Test
@@ -510,6 +510,6 @@ When executing the test, the following steps are taken for each `TestStep`:
    `azurerm_resource_group` is tested independently in its own acceptance
    tests.
 
-[website]: https://github.com/hashicorp/terraform/tree/master/website
-[acctests]: https://github.com/hashicorp/terraform#acceptance-tests
+[website]: https://github.com/r3labs/terraform/tree/master/website
+[acctests]: https://github.com/r3labs/terraform#acceptance-tests
 [ml]: https://groups.google.com/group/terraform-tool

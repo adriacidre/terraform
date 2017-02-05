@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	pagerduty "github.com/PagerDuty/go-pagerduty"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/r3labs/terraform/helper/schema"
 )
 
 // Validate a value against a set of possible values

@@ -78,7 +78,7 @@ be a binary so the package is "main":
 package main
 
 import (
-	"github.com/hashicorp/terraform/plugin"
+	"github.com/r3labs/terraform/plugin"
 )
 
 func main() {

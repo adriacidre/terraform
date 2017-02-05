@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/terraform"
 	"github.com/mitchellh/cli"
 )
 
@@ -102,7 +102,7 @@ func TestInit_noArgs(t *testing.T) {
 	}
 }
 
-// https://github.com/hashicorp/terraform/issues/518
+// https://github.com/r3labs/terraform/issues/518
 func TestInit_dstInSrc(t *testing.T) {
 	dir := tempDir(t)
 	if err := os.MkdirAll(dir, 0755); err != nil {

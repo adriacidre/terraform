@@ -55,7 +55,7 @@ Refer to the [CHANGELOG](CHANGELOG.md) for version to version changes.
 
 * [Kubernetes](https://github.com/kubernetes/kubernetes/tree/master/pkg/cloudprovider/providers/vsphere)
 
-* [Terraform](https://github.com/hashicorp/terraform/tree/master/builtin/providers/vsphere)
+* [Terraform](https://github.com/r3labs/terraform/tree/master/builtin/providers/vsphere)
 
 * [VMware VIC Engine](https://github.com/vmware/vic)
 

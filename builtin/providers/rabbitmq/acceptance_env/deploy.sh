@@ -23,4 +23,4 @@ echo 'export PATH=$PATH:$HOME/terraform:$HOME/go/bin' >> .bashrc
 source .bashrc
 
 go get -u github.com/kardianos/govendor
-go get github.com/hashicorp/terraform
+go get github.com/r3labs/terraform

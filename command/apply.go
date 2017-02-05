@@ -9,9 +9,9 @@ import (
 
 	"github.com/hashicorp/go-getter"
 	"github.com/hashicorp/go-multierror"
-	"github.com/hashicorp/terraform/config"
-	"github.com/hashicorp/terraform/helper/experiment"
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/config"
+	"github.com/r3labs/terraform/helper/experiment"
+	"github.com/r3labs/terraform/terraform"
 )
 
 // ApplyCommand is a Command implementation that applies a Terraform

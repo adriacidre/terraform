@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/hashicorp/go-cleanhttp"
 	"github.com/hashicorp/go-multierror"
-	terraformAws "github.com/hashicorp/terraform/builtin/providers/aws"
+	terraformAws "github.com/r3labs/terraform/builtin/providers/aws"
 )
 
 func s3Factory(conf map[string]string) (Client, error) {

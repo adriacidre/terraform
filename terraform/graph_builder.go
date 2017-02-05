@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/hashicorp/terraform/config/module"
+	"github.com/r3labs/terraform/config/module"
 )
 
 // GraphBuilder is an interface that can be implemented and used with

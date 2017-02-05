@@ -8,7 +8,7 @@ description: |-
 
 # Cross Provider Example
 
-[**Example Source Code**](https://github.com/hashicorp/terraform/tree/master/examples/cross-provider)
+[**Example Source Code**](https://github.com/r3labs/terraform/tree/master/examples/cross-provider)
 
 This is a simple example of the cross-provider capabilities of
 Terraform.

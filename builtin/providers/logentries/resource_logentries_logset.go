@@ -1,7 +1,7 @@
 package logentries
 
 import (
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/r3labs/terraform/helper/schema"
 	"github.com/logentries/le_goclient"
 )
 

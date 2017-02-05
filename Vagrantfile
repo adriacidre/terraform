@@ -53,10 +53,10 @@ export PATH="$SRCROOT/bin:$SRCPATH/bin:\$PATH"
 EOF
 chmod 755 /etc/profile.d/gopath.sh
 
-grep -q -F 'cd /opt/gopath/src/github.com/hashicorp/terraform' /home/vagrant/.bashrc || cat >>/home/vagrant/.bashrc <<EOF
+grep -q -F 'cd /opt/gopath/src/github.com/r3labs/terraform' /home/vagrant/.bashrc || cat >>/home/vagrant/.bashrc <<EOF
 
 ## After login, change to terraform directory
-cd /opt/gopath/src/github.com/hashicorp/terraform
+cd /opt/gopath/src/github.com/r3labs/terraform
 EOF
 
 SCRIPT
@@ -67,7 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "prepare-shell", type: "shell", inline: "sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile", privileged: false
   config.vm.provision "initial-setup", type: "shell", inline: $script
-  config.vm.synced_folder '.', '/opt/gopath/src/github.com/hashicorp/terraform'
+  config.vm.synced_folder '.', '/opt/gopath/src/github.com/r3labs/terraform'
 
   config.vm.provider "docker" do |v, override|
     override.vm.box = "tknerr/baseimage-ubuntu-#{UBUNTUVERSION}"

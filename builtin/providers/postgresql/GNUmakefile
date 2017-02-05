@@ -9,7 +9,7 @@ POSTGRES?=$(wildcard /usr/local/bin/postgres /opt/local/lib/postgresql96/bin/pos
 PSQL?=$(wildcard /usr/local/bin/psql /opt/local/lib/postgresql96/bin/psql)
 INITDB?=$(wildcard /usr/local/bin/initdb /opt/local/lib/postgresql96/bin/initdb)
 
-PGDATA?=$(GOPATH)/src/github.com/hashicorp/terraform/builtin/providers/postgresql/data
+PGDATA?=$(GOPATH)/src/github.com/r3labs/terraform/builtin/providers/postgresql/data
 
 initdb::
 	echo "" > pwfile

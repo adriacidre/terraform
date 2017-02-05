@@ -22,7 +22,7 @@ File | Description
 Start a Consul server configured to serve HTTP traffic, and validate incoming
 HTTPS requests.
 
-    ~/.go/src/github.com/hashicorp/terraform> consul agent \
+    ~/.go/src/github.com/r3labs/terraform> consul agent \
         -bind 127.0.0.1 \
         -data-dir=/tmp \
         -dev \
@@ -33,7 +33,7 @@ HTTPS requests.
 
 With TLS, `CONSUL_HTTP_ADDR` must match the Common Name of the agent certificate.
 
-    ~/.go/src/github.com/hashicorp/terraform> CONSUL_CERT_FILE=test-fixtures/usercert.pem \
+    ~/.go/src/github.com/r3labs/terraform> CONSUL_CERT_FILE=test-fixtures/usercert.pem \
         CONSUL_KEY_FILE=test-fixtures/userkey.pem \
         CONSUL_CA_FILE=test-fixtures/cacert.pem \
         CONSUL_SCHEME=https \

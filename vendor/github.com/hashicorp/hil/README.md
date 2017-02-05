@@ -19,7 +19,7 @@ possible some of these may be added later but the right use case must exist.
 
 Many of our tools have support for something similar to templates, but
 within the configuration itself. The most prominent requirement was in
-[Terraform](https://github.com/hashicorp/terraform) where we wanted the
+[Terraform](https://github.com/r3labs/terraform) where we wanted the
 configuration to be able to reference values from elsewhere in the
 configuration. Example:
 

@@ -24,7 +24,7 @@ quickdev: generate
 # changes will require a rebuild of everything, in which case the dev
 # target should be used.
 core-dev: generate
-	go install -tags 'core' github.com/hashicorp/terraform
+	go install -tags 'core' github.com/r3labs/terraform
 
 # Shorthand for quickly testing the core of Terraform (i.e. "not providers")
 core-test: generate
@@ -34,7 +34,7 @@ core-test: generate
 # Shorthand for building and installing just one plugin for local testing.
 # Run as (for example): make plugin-dev PLUGIN=provider-aws
 plugin-dev: generate
-	go install github.com/hashicorp/terraform/builtin/bins/$(PLUGIN)
+	go install github.com/r3labs/terraform/builtin/bins/$(PLUGIN)
 	mv $(GOPATH)/bin/$(PLUGIN) $(GOPATH)/bin/terraform-$(PLUGIN)
 
 # test runs the unit tests

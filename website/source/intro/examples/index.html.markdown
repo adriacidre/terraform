@@ -32,7 +32,7 @@ uses it isn't required.
 ## Examples
 
 All of the examples are in the
-["examples" directory within the Terraform source code](https://github.com/hashicorp/terraform/tree/master/examples). Each example (as well as the examples
+["examples" directory within the Terraform source code](https://github.com/r3labs/terraform/tree/master/examples). Each example (as well as the examples
 directory) has a README explaining the goal of the example.
 
 To use these examples, Terraform must first be installed on your machine.
@@ -42,7 +42,7 @@ Once installed, you can use two steps to view and run the examples.
 To clone any examples, run `terraform init` with the URL to the example:
 
 ```
-$ terraform init github.com/hashicorp/terraform/examples/aws-two-tier
+$ terraform init github.com/r3labs/terraform/examples/aws-two-tier
 ...
 ```
 
@@ -51,7 +51,7 @@ use your own editor to read and browse the configurations. This command will
 not _run_ any code.
 
 ~> If you want to browse the files before downloading them, you can [view
-them on GitHub](https://github.com/hashicorp/terraform/tree/master/examples/aws-two-tier).
+them on GitHub](https://github.com/r3labs/terraform/tree/master/examples/aws-two-tier).
 
 If you want to run the example, just run `terraform apply`:
 

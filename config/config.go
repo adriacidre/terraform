@@ -12,7 +12,7 @@ import (
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/hil"
 	"github.com/hashicorp/hil/ast"
-	"github.com/hashicorp/terraform/helper/hilmapstructure"
+	"github.com/r3labs/terraform/helper/hilmapstructure"
 	"github.com/mitchellh/reflectwalk"
 )
 

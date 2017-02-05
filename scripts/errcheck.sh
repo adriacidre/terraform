@@ -10,7 +10,7 @@ if ! which errcheck > /dev/null; then
 fi
 
 err_files=$(errcheck -ignoretests -ignore \
-  'github.com/hashicorp/terraform/helper/schema:Set' \
+  'github.com/r3labs/terraform/helper/schema:Set' \
   -ignore 'bytes:.*' \
   -ignore 'io:Close|Write' \
   ./builtin/providers/aws/...)

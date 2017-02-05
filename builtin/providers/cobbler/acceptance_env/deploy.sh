@@ -29,8 +29,8 @@ export GOPATH=$HOME/go
 source ~/.bashrc
 
 go get github.com/tools/godep
-go get github.com/hashicorp/terraform
-cd $GOPATH/src/github.com/hashicorp/terraform
+go get github.com/r3labs/terraform
+cd $GOPATH/src/github.com/r3labs/terraform
 godep restore
 
 # Cobbler

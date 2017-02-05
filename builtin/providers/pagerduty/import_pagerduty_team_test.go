@@ -3,7 +3,7 @@ package pagerduty
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform/helper/resource"
+	"github.com/r3labs/terraform/helper/resource"
 )
 
 func TestAccPagerDutyTeam_import(t *testing.T) {

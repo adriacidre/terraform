@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/hashicorp/terraform/helper/resource"
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/helper/resource"
+	"github.com/r3labs/terraform/terraform"
 )
 
 func TestAccPagerDutyService_Basic(t *testing.T) {

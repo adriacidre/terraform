@@ -75,7 +75,7 @@ module "private-infra" {
 }
 ```
 
-**Note:** Terraform does not yet support interpolations in the `source` field, so the machine username and password will have to be embedded directly into the `source` string. You can track [GH-1439](https://github.com/hashicorp/terraform/issues/1439) to learn when this limitation is addressed.
+**Note:** Terraform does not yet support interpolations in the `source` field, so the machine username and password will have to be embedded directly into the `source` string. You can track [GH-1439](https://github.com/r3labs/terraform/issues/1439) to learn when this limitation is addressed.
 
 ## BitBucket
 

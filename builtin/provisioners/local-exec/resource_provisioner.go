@@ -7,8 +7,8 @@ import (
 	"runtime"
 
 	"github.com/armon/circbuf"
-	"github.com/hashicorp/terraform/helper/config"
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/helper/config"
+	"github.com/r3labs/terraform/terraform"
 	"github.com/mitchellh/go-linereader"
 )
 

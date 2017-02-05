@@ -11,7 +11,7 @@ interface to the [DNSMadeEasy](http://www.dnsmadeeasy.com/) API.
 
 It doesn't have full API coverage, and only implements specific
 endpoints, as it is designed for use with
-[Terraform](https://github.com/hashicorp/terraform).
+[Terraform](https://github.com/r3labs/terraform).
 
 **For those reasons, I recommend looking elsewhere if you just need
 a standard DNSMadeEasy API client.**
@@ -25,7 +25,7 @@ The full documentation is available on [Godoc](http://godoc.org/github.com/sonia
 ## Related Projects
 
 * https://github.com/soniah/terraform-provider-dme
-* https://github.com/hashicorp/terraform
+* https://github.com/r3labs/terraform
 * https://github.com/pearkes/dnsimple
 
 ## License

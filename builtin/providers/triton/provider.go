@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/hashicorp/go-multierror"
-	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/helper/schema"
+	"github.com/r3labs/terraform/terraform"
 	"github.com/joyent/gocommon/client"
 	"github.com/joyent/gosdc/cloudapi"
 	"github.com/joyent/gosign/auth"
