@@ -2000,7 +2000,7 @@ func TestValidateAwsKmsName(t *testing.T) {
 			ErrCount: 1,
 		},
 		{
-			Value:    "hashicorp/terraform",
+			Value:    "r3labs/terraform",
 			ErrCount: 1,
 		},
 	}

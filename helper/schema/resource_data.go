@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/hashicorp/terraform/terraform"
+	"github.com/r3labs/terraform/terraform"
 )
 
 // ResourceData is used to query and set the attributes of a resource.
@@ -45,6 +45,11 @@ type getResult struct {
 	Computed       bool
 	Exists         bool
 	Schema         *Schema
+}
+
+// SetSchema : allows you to overload the default ResourceData schema
+func (d *ResourceData) SetSchema(s map[string]*Schema) {
+	d.schema = s
 }
 
 // UnsafeSetFieldRaw allows setting arbitrary values in state to arbitrary
