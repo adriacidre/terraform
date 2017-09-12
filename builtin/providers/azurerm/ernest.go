@@ -7,6 +7,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/storage"
 )
 
+// GetVMStorageImageReference :
+func (armClient *ArmClient) GetVMStorageImageReference(resGroup, name string) map[string]interface{} {
+	resp, err := armClient.vmClient.Get(resGroup, name, "")
+	if err != nil {
+		return nil
+	}
+
+	ref := make(map[string]interface{})
+	image := resp.VirtualMachineProperties.StorageProfile.ImageReference
+	ref["offer"] = *image.Offer
+	ref["publisher"] = *image.Publisher
+	ref["sku"] = *image.Sku
+
+	if image.Version != nil {
+		ref["version"] = *image.Version
+	}
+
+	return ref
+}
+
+// ListNetworkInterfaceConfigurations : ..
 func (armClient *ArmClient) ListNetworkInterfaceConfigurations(resourceGroupName, networkInterfaceName string) []map[string]string {
 	ipConfigurations := make([]map[string]string, 0)
 	interfaces, _ := armClient.ifaceClient.List(resourceGroupName)
@@ -42,6 +63,7 @@ func (armClient *ArmClient) ListNetworkInterfaceConfigurations(resourceGroupName
 	return ipConfigurations
 }
 
+// ListResourcesByGroup : ..
 func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, expand string) (m map[string][]string, err error) {
 	m = make(map[string][]string)
 	results, err := armClient.resourceGroupClient.ListResources(resourceGroupName, filters, expand, nil)
