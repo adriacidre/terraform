@@ -26,6 +26,7 @@ type ResourceData struct {
 	diff     *terraform.InstanceDiff
 	meta     map[string]interface{}
 	timeouts *ResourceTimeout
+	Content  map[string]interface{}
 
 	// Don't set
 	multiReader *MultiLevelFieldReader
