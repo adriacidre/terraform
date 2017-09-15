@@ -302,7 +302,7 @@ func (w *MapFieldWriter) setSet(
 				panic("set item just set doesn't exist")
 			}
 
-			// s.Add(result.Value)
+			s.Add(result.Value)
 		}
 
 		value = s
