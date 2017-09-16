@@ -173,6 +173,10 @@ func (d *ResourceData) Set(key string, value interface{}) error {
 			}
 		}
 	}
+	if d.Content == nil {
+		d.Content = make(map[string]interface{}, 0)
+	}
+	d.Content[key] = value
 
 	return d.setWriter.WriteField(strings.Split(key, "."), value)
 }

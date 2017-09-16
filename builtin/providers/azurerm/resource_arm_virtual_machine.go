@@ -603,9 +603,7 @@ func resourceArmVirtualMachineCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func resourceArmVirtualMachineRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*ArmClient)
-	vmClient := client.vmClient
-	d.Content = make(map[string]interface{}, 0)
+	vmClient := meta.(*ArmClient).vmClient
 
 	id, err := parseAzureResourceID(d.Id())
 	if err != nil {
@@ -619,113 +617,86 @@ func resourceArmVirtualMachineRead(d *schema.ResourceData, meta interface{}) err
 	if err != nil {
 		if resp.StatusCode == http.StatusNotFound {
 			d.SetId("")
-			d.Content["id"] = ""
 			return nil
 		}
 		return fmt.Errorf("Error making Read request on Azure Virtual Machine %s: %s", name, err)
 	}
 
 	d.Set("name", resp.Name)
-	d.Content["name"] = resp.Name
 	d.Set("resource_group_name", resGroup)
-	d.Content["resource_group_name"] = resGroup
 	d.Set("location", resp.Location)
-	d.Content["location"] = resp.Location
 
 	if resp.Plan != nil {
-		set := schema.NewSet(resourceArmVirtualMachinePlanHash, flattenAzureRmVirtualMachinePlan(resp.Plan))
-		d.Content["plan"] = set
-		if err := d.Set("plan", set); err != nil {
+		if err := d.Set("plan", schema.NewSet(resourceArmVirtualMachinePlanHash, flattenAzureRmVirtualMachinePlan(resp.Plan))); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Plan error: %#v", err)
 		}
 	}
 
 	if resp.VirtualMachineProperties.AvailabilitySet != nil {
-		d.Content["availability_set_id"] = strings.ToLower(*resp.VirtualMachineProperties.AvailabilitySet.ID)
 		d.Set("availability_set_id", strings.ToLower(*resp.VirtualMachineProperties.AvailabilitySet.ID))
 	}
 
 	d.Set("vm_size", resp.VirtualMachineProperties.HardwareProfile.VMSize)
-	d.Content["vm_size"] = fmt.Sprintf("%s", resp.VirtualMachineProperties.HardwareProfile.VMSize)
 
 	if resp.VirtualMachineProperties.StorageProfile.ImageReference != nil {
-		set := schema.NewSet(resourceArmVirtualMachineStorageImageReferenceHash, flattenAzureRmVirtualMachineImageReference(resp.VirtualMachineProperties.StorageProfile.ImageReference))
-		d.Content["storage_image_reference"] = set
-		if err := d.Set("storage_image_reference", set); err != nil {
+		if err := d.Set("storage_image_reference", schema.NewSet(resourceArmVirtualMachineStorageImageReferenceHash, flattenAzureRmVirtualMachineImageReference(resp.VirtualMachineProperties.StorageProfile.ImageReference))); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage Image Reference error: %#v", err)
 		}
 	}
 
-	sod := schema.NewSet(resourceArmVirtualMachineStorageOsDiskHash, flattenAzureRmVirtualMachineOsDisk(resp.VirtualMachineProperties.StorageProfile.OsDisk))
-	d.Content["storage_os_disk"] = sod
-	if err := d.Set("storage_os_disk", sod); err != nil {
+	if err := d.Set("storage_os_disk", schema.NewSet(resourceArmVirtualMachineStorageOsDiskHash, flattenAzureRmVirtualMachineOsDisk(resp.VirtualMachineProperties.StorageProfile.OsDisk))); err != nil {
 		return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage OS Disk error: %#v", err)
 	}
 
 	if resp.VirtualMachineProperties.StorageProfile.DataDisks != nil {
-		set := flattenAzureRmVirtualMachineDataDisk(resp.VirtualMachineProperties.StorageProfile.DataDisks)
-		d.Content["storage_data_disk"] = set
-		if err := d.Set("storage_data_disk", set); err != nil {
+		if err := d.Set("storage_data_disk", flattenAzureRmVirtualMachineDataDisk(resp.VirtualMachineProperties.StorageProfile.DataDisks)); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage Data Disks error: %#v", err)
 		}
 	}
 
-	osp := schema.NewSet(resourceArmVirtualMachineStorageOsProfileHash, flattenAzureRmVirtualMachineOsProfile(resp.VirtualMachineProperties.OsProfile))
-	d.Content["os_profile"] = osp
-	if err := d.Set("os_profile", osp); err != nil {
+	if err := d.Set("os_profile", schema.NewSet(resourceArmVirtualMachineStorageOsProfileHash, flattenAzureRmVirtualMachineOsProfile(resp.VirtualMachineProperties.OsProfile))); err != nil {
 		return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage OS Profile: %#v", err)
 	}
 
 	if resp.VirtualMachineProperties.OsProfile.WindowsConfiguration != nil {
-		set := flattenAzureRmVirtualMachineOsProfileWindowsConfiguration(resp.VirtualMachineProperties.OsProfile.WindowsConfiguration)
-		d.Content["os_profile_windows_config"] = set
-		if err := d.Set("os_profile_windows_config", set); err != nil {
+		if err := d.Set("os_profile_windows_config", flattenAzureRmVirtualMachineOsProfileWindowsConfiguration(resp.VirtualMachineProperties.OsProfile.WindowsConfiguration)); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage OS Profile Windows Configuration: %#v", err)
 		}
 	}
 
 	if resp.VirtualMachineProperties.OsProfile.LinuxConfiguration != nil {
-		set := flattenAzureRmVirtualMachineOsProfileLinuxConfiguration(resp.VirtualMachineProperties.OsProfile.LinuxConfiguration)
-		d.Content["os_profile_linux_config"] = set
-		if err := d.Set("os_profile_linux_config", set); err != nil {
+		if err := d.Set("os_profile_linux_config", flattenAzureRmVirtualMachineOsProfileLinuxConfiguration(resp.VirtualMachineProperties.OsProfile.LinuxConfiguration)); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage OS Profile Linux Configuration: %#v", err)
 		}
 	}
 
 	if resp.VirtualMachineProperties.OsProfile.Secrets != nil {
-		set := flattenAzureRmVirtualMachineOsProfileSecrets(resp.VirtualMachineProperties.OsProfile.Secrets)
-		d.Content["os_profile_secrets"] = set
-		if err := d.Set("os_profile_secrets", set); err != nil {
+		if err := d.Set("os_profile_secrets", flattenAzureRmVirtualMachineOsProfileSecrets(resp.VirtualMachineProperties.OsProfile.Secrets)); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage OS Profile Secrets: %#v", err)
 		}
 	}
 
 	if resp.VirtualMachineProperties.DiagnosticsProfile != nil && resp.VirtualMachineProperties.DiagnosticsProfile.BootDiagnostics != nil {
-		set := flattenAzureRmVirtualMachineDiagnosticsProfile(resp.VirtualMachineProperties.DiagnosticsProfile.BootDiagnostics)
-		d.Content["boot_diagnostics"] = set
-		if err := d.Set("boot_diagnostics", set); err != nil {
+		if err := d.Set("boot_diagnostics", flattenAzureRmVirtualMachineDiagnosticsProfile(resp.VirtualMachineProperties.DiagnosticsProfile.BootDiagnostics)); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Diagnostics Profile: %#v", err)
 		}
 	}
 
 	if resp.VirtualMachineProperties.NetworkProfile != nil {
-		set := flattenAzureRmVirtualMachineNetworkInterfaces(resp.VirtualMachineProperties.NetworkProfile)
-		d.Content["network_interface_ids"] = set
-		if err := d.Set("network_interface_ids", set); err != nil {
+		if err := d.Set("network_interface_ids", flattenAzureRmVirtualMachineNetworkInterfaces(resp.VirtualMachineProperties.NetworkProfile)); err != nil {
 			return fmt.Errorf("[DEBUG] Error setting Virtual Machine Storage Network Interfaces: %#v", err)
 		}
 
 		if resp.VirtualMachineProperties.NetworkProfile.NetworkInterfaces != nil {
 			for _, nic := range *resp.VirtualMachineProperties.NetworkProfile.NetworkInterfaces {
 				if nic.NetworkInterfaceReferenceProperties != nil && *nic.NetworkInterfaceReferenceProperties.Primary {
-					d.Content["primary_network_interface_id"] = nic.ID
 					d.Set("primary_network_interface_id", nic.ID)
 					break
 				}
 			}
 		}
 	}
-	d.Content["tags"] = resp.Tags
+
 	flattenAndSetTags(d, resp.Tags)
 
 	return nil
@@ -988,7 +959,7 @@ func flattenAzureRmVirtualMachineDataDisk(disks *[]compute.DataDisk) interface{}
 			l["managed_disk_id"] = *disk.ManagedDisk.ID
 		}
 		l["create_option"] = disk.CreateOption
-		l["caching"] = fmt.Sprintf("%s", disk.Caching)
+		l["caching"] = string(disk.Caching)
 		if disk.DiskSizeGB != nil {
 			l["disk_size_gb"] = *disk.DiskSizeGB
 		}
@@ -1092,7 +1063,7 @@ func flattenAzureRmVirtualMachineOsDisk(disk *compute.OSDisk) []interface{} {
 		result["managed_disk_type"] = string(disk.ManagedDisk.StorageAccountType)
 		result["managed_disk_id"] = *disk.ManagedDisk.ID
 	}
-	result["create_option"] = string(disk.CreateOption)
+	result["create_option"] = disk.CreateOption
 	result["caching"] = disk.Caching
 	if disk.DiskSizeGB != nil {
 		result["disk_size_gb"] = *disk.DiskSizeGB
