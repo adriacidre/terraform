@@ -1,11 +1,78 @@
 package azurerm
 
 import (
+	"errors"
 	"log"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/storage"
 )
+
+// ResourceArmLoadBalancerRules : ..
+func (armClient *ArmClient) ResourceArmLoadBalancerRules(lbID, ruleID string) (rules map[string]interface{}, err error) {
+	id, err := parseAzureResourceID(ruleID)
+	if err != nil {
+		return rules, err
+	}
+	name := id.Path["loadBalancingRules"]
+
+	loadBalancer, exists, err := retrieveLoadBalancerById(lbID, armClient)
+	if err != nil {
+		return rules, errors.New("Error Getting LoadBalancer By ID {{err}}")
+	}
+	if !exists {
+		rules["id"] = ""
+		log.Printf("[INFO] LoadBalancer %q not found. Removing from state", name)
+		return rules, nil
+	}
+
+	config, _, exists := findLoadBalancerRuleByName(loadBalancer, name)
+	if !exists {
+		rules["id"] = ""
+		log.Printf("[INFO] LoadBalancer Rule %q not found. Removing from state", name)
+		return rules, nil
+	}
+
+	rules["name"] = config.Name
+	rules["resource_group_name"] = id.ResourceGroup
+
+	rules["protocol"] = config.LoadBalancingRulePropertiesFormat.Protocol
+	rules["frontend_port"] = config.LoadBalancingRulePropertiesFormat.FrontendPort
+	rules["backend_port"] = config.LoadBalancingRulePropertiesFormat.BackendPort
+
+	if config.LoadBalancingRulePropertiesFormat.EnableFloatingIP != nil {
+		rules["enable_floating_ip"] = config.LoadBalancingRulePropertiesFormat.EnableFloatingIP
+	}
+
+	if config.LoadBalancingRulePropertiesFormat.IdleTimeoutInMinutes != nil {
+		rules["idle_timeout_in_minutes"] = config.LoadBalancingRulePropertiesFormat.IdleTimeoutInMinutes
+	}
+
+	if config.LoadBalancingRulePropertiesFormat.FrontendIPConfiguration != nil {
+		fipID, err := parseAzureResourceID(*config.LoadBalancingRulePropertiesFormat.FrontendIPConfiguration.ID)
+		if err != nil {
+			return rules, err
+		}
+
+		rules["frontend_ip_configuration_name"] = fipID.Path["frontendIPConfigurations"]
+		rules["frontend_ip_configuration_id"] = config.LoadBalancingRulePropertiesFormat.FrontendIPConfiguration.ID
+	}
+
+	if config.LoadBalancingRulePropertiesFormat.BackendAddressPool != nil {
+		rules["backend_address_pool_id"] = config.LoadBalancingRulePropertiesFormat.BackendAddressPool.ID
+	}
+
+	if config.LoadBalancingRulePropertiesFormat.Probe != nil {
+		rules["probe_id"] = config.LoadBalancingRulePropertiesFormat.Probe.ID
+	}
+
+	if config.LoadBalancingRulePropertiesFormat.LoadDistribution != "" {
+		rules["load_distribution"] = config.LoadBalancingRulePropertiesFormat.LoadDistribution
+	}
+
+	return rules, nil
+
+}
 
 // GetVMStorageImageReference :
 func (armClient *ArmClient) GetVMStorageImageReference(resGroup, name string) map[string]interface{} {
@@ -123,11 +190,37 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 		}
 	}
 
-	// Import resource groups
+	// Import loadbalancers
 	rg, err := armClient.resourceGroupClient.Get(resourceGroupName)
 	if &rg != nil {
 		t := "Microsoft.Network/loadBalancers"
 		m[t] = append(m[t], *rg.ID)
+	}
+
+	for _, id := range m["Microsoft.Network/loadBalancers"] {
+		if strings.Contains(id, "loadBalancers") {
+			loadBalancer, exists, err := retrieveLoadBalancerById(id, armClient)
+			if err == nil && exists {
+				rules := loadBalancer.LoadBalancerPropertiesFormat.LoadBalancingRules
+				for _, rule := range *rules {
+					t := "Microsoft.Network/loadBalancers/loadBalancingRules"
+					m[t] = append(m[t], *rule.ID)
+				}
+
+				pools := loadBalancer.LoadBalancerPropertiesFormat.BackendAddressPools
+				for _, pool := range *pools {
+					t := "Microsoft.Network/loadBalancers/backendAddressPools"
+					m[t] = append(m[t], *pool.ID)
+				}
+
+				probes := loadBalancer.LoadBalancerPropertiesFormat.Probes
+				for _, probe := range *probes {
+					t := "Microsoft.Network/loadBalancers/probes"
+					m[t] = append(m[t], *probe.ID)
+				}
+
+			}
+		}
 	}
 
 	for k, v := range m {
@@ -136,6 +229,5 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 			log.Println(" - " + s)
 		}
 	}
-
 	return m, nil
 }

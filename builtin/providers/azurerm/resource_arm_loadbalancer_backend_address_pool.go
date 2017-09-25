@@ -3,13 +3,14 @@ package azurerm
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/arm/network"
 	"github.com/hashicorp/errwrap"
+	"github.com/jen20/riviera/azure"
 	"github.com/r3labs/terraform/helper/resource"
 	"github.com/r3labs/terraform/helper/schema"
-	"github.com/jen20/riviera/azure"
 )
 
 func resourceArmLoadBalancerBackendAddressPool() *schema.Resource {
@@ -145,8 +146,10 @@ func resourceArmLoadBalancerBackendAddressPoolRead(d *schema.ResourceData, meta 
 		return err
 	}
 	name := id.Path["backendAddressPools"]
+	parts := strings.Split(d.Id(), "/")
+	loadBalancerID := strings.Join(parts[0:9], "/")
 
-	loadBalancer, exists, err := retrieveLoadBalancerById(d.Get("loadbalancer_id").(string), meta)
+	loadBalancer, exists, err := retrieveLoadBalancerById(loadBalancerID, meta)
 	if err != nil {
 		return errwrap.Wrapf("Error Getting LoadBalancer By ID {{err}}", err)
 	}
