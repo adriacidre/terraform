@@ -276,8 +276,10 @@ func resourceArmNetworkInterfaceRead(d *schema.ResourceData, meta interface{}) e
 			privateIPAddress = (*iface.IPConfigurations)[0].InterfaceIPConfigurationPropertiesFormat.PrivateIPAddress
 			cfg := (*iface.IPConfigurations)[0]
 			pools := make([]string, 0)
-			for _, v := range *cfg.InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools {
-				pools = append(pools, *v.ID)
+			if cfg.InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools != nil {
+				for _, v := range *cfg.InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools {
+					pools = append(pools, *v.ID)
+				}
 			}
 			d.Content["lb_pools"] = pools
 		}
