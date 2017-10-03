@@ -274,6 +274,12 @@ func resourceArmNetworkInterfaceRead(d *schema.ResourceData, meta interface{}) e
 		///TODO: Change this to a loop when https://github.com/Azure/azure-sdk-for-go/issues/259 is fixed
 		if (*iface.IPConfigurations)[0].InterfaceIPConfigurationPropertiesFormat != nil {
 			privateIPAddress = (*iface.IPConfigurations)[0].InterfaceIPConfigurationPropertiesFormat.PrivateIPAddress
+			cfg := (*iface.IPConfigurations)[0]
+			pools := make([]string, 0)
+			for _, v := range *cfg.InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools {
+				pools = append(pools, *v.ID)
+			}
+			d.Content["lb_pools"] = pools
 		}
 
 		if *privateIPAddress != "" {

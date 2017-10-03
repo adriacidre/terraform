@@ -100,25 +100,26 @@ func (armClient *ArmClient) ListNetworkInterfaceConfigurations(resourceGroupName
 	interfaces, _ := armClient.ifaceClient.List(resourceGroupName)
 	for _, val := range *interfaces.Value {
 		for _, ip := range *val.IPConfigurations {
+			addressPools := make([]string, 0)
 			/*
-				addressPools := make([]string, 0, len(*ip.LoadBalancerBackendAddressPools))
-				for _, pool := range *ip.LoadBalancerBackendAddressPools {
+				for _, pool := range *ip.InterfaceIPConfigurationPropertiesFormat.LoadBalancerBackendAddressPools {
 					addressPools = append(addressPools, *pool.ID)
 				}
-				natRules := make([]string, 0, len(*ip.LoadBalancerInboundNatRules))
-				for _, pool := range *ip.LoadBalancerInboundNatRules {
+			*/
+			natRules := make([]string, 0)
+			/*
+				for _, pool := range *ip.InterfaceIPConfigurationPropertiesFormat.LoadBalancerInboundNatRules {
 					natRules = append(natRules, *pool.ID)
 				}
 			*/
-
 			ipConfiguration := map[string]string{
 				"name":                                    *ip.Name,
 				"subnet_id":                               *ip.Subnet.ID,
 				"interface":                               *val.Name,
 				"private_ip_address":                      *ip.PrivateIPAddress,
 				"private_ip_address_allocation":           string(ip.PrivateIPAllocationMethod),
-				"load_balancer_backend_address_pools_ids": "", //strings.Join(addressPools, ","),
-				"load_balancer_inbound_nat_rules_ids ":    "", // strings.Join(natRules, ","),
+				"load_balancer_backend_address_pools_ids": strings.Join(addressPools, ","),
+				"load_balancer_inbound_nat_rules_ids ":    strings.Join(natRules, ","),
 			}
 			if ip.PublicIPAddress != nil {
 				ipConfiguration["public_ip_address_id"] = *ip.PublicIPAddress.ID
