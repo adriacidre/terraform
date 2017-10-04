@@ -159,8 +159,7 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 						if _, ok := m[subT]; !ok {
 							m[subT] = make([]string, 0)
 						}
-
-						m[subT] = append(m["azurerm_subnet"], subid)
+						m[subT] = append(m[subT], subid)
 					}
 				}
 			}
@@ -189,6 +188,7 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 
 			m[t] = append(m[t], id)
 		}
+
 	}
 
 	// Import loadbalancers
@@ -219,7 +219,6 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 					t := "Microsoft.Network/loadBalancers/probes"
 					m[t] = append(m[t], *probe.ID)
 				}
-
 			}
 		}
 	}

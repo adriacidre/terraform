@@ -269,6 +269,8 @@ func resourceArmNetworkInterfaceRead(d *schema.ResourceData, meta interface{}) e
 		}
 	}
 
+	d.Content["enable_ip_forwarding"] = iface.EnableIPForwarding
+
 	if iface.IPConfigurations != nil && len(*iface.IPConfigurations) > 0 {
 		var privateIPAddress *string
 		///TODO: Change this to a loop when https://github.com/Azure/azure-sdk-for-go/issues/259 is fixed

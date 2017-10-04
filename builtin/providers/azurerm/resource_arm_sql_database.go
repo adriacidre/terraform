@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/r3labs/terraform/helper/schema"
 	"github.com/jen20/riviera/azure"
 	"github.com/jen20/riviera/sql"
+	"github.com/r3labs/terraform/helper/schema"
 )
 
 func resourceArmSqlDatabase() *schema.Resource {
@@ -221,6 +221,7 @@ func resourceArmSqlDatabaseRead(d *schema.ResourceData, meta interface{}) error 
 	d.Set("creation_date", resp.CreationDate)
 	d.Set("default_secondary_location", resp.DefaultSecondaryLocation)
 	d.Set("elastic_pool_name", resp.ElasticPoolName)
+	d.Set("edition", resp.Edition)
 
 	flattenAndSetTags(d, resp.Tags)
 

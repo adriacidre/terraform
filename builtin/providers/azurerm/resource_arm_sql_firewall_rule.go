@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/r3labs/terraform/helper/schema"
 	"github.com/jen20/riviera/azure"
 	"github.com/jen20/riviera/sql"
+	"github.com/r3labs/terraform/helper/schema"
 )
 
 func resourceArmSqlFirewallRule() *schema.Resource {
