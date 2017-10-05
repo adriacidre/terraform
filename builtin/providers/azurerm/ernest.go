@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/storage"
+	"github.com/jen20/riviera/sql"
 )
 
 // ResourceArmLoadBalancerRules : ..
@@ -186,6 +187,31 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 				}
 			}
 
+			if t == "Microsoft.Sql/servers" {
+				conT := "Microsoft.Storage/firewallRules"
+				if _, ok := m[conT]; !ok {
+					m[conT] = make([]string, 0)
+				}
+				rivieraClient := armClient.rivieraClient
+
+				readRequest := rivieraClient.NewRequestForURI(id)
+				readRequest.Command = &sql.GetServer{}
+
+				readResponse, err := readRequest.Execute()
+				if err != nil {
+					log.Println("Error reading SQL Server: %s", err)
+				}
+				resp := readResponse.Parsed.(*sql.GetServerResponse)
+				tags := flattenAndGetTags(resp.Tags)
+				if v, ok := tags["ernest_firewall_rules"]; ok {
+					val := v.(string)
+					for _, t := range strings.Split(val, ",") {
+						tid := id + "/firewallRules/" + t
+						m[conT] = append(m[conT], tid)
+					}
+				}
+			}
+
 			m[t] = append(m[t], id)
 		}
 
@@ -229,5 +255,20 @@ func (armClient *ArmClient) ListResourcesByGroup(resourceGroupName, filters, exp
 			log.Println(" - " + s)
 		}
 	}
+
 	return m, nil
+}
+
+func flattenAndGetTags(tagsMap *map[string]*string) map[string]interface{} {
+	if tagsMap == nil {
+		return make(map[string]interface{})
+	}
+
+	output := make(map[string]interface{}, len(*tagsMap))
+
+	for i, v := range *tagsMap {
+		output[i] = *v
+	}
+
+	return output
 }
