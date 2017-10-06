@@ -270,7 +270,9 @@ func resourceArmNetworkInterfaceRead(d *schema.ResourceData, meta interface{}) e
 	}
 
 	d.Content["enable_ip_forwarding"] = iface.EnableIPForwarding
-	d.Content["network_security_group_id"] = *iface.NetworkSecurityGroup.ID
+	if iface.NetworkSecurityGroup != nil {
+		d.Content["network_security_group_id"] = *iface.NetworkSecurityGroup.ID
+	}
 
 	if iface.IPConfigurations != nil && len(*iface.IPConfigurations) > 0 {
 		var privateIPAddress *string
