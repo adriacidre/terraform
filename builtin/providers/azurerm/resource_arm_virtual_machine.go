@@ -599,6 +599,13 @@ func resourceArmVirtualMachineCreate(d *schema.ResourceData, meta interface{}) e
 
 	d.SetId(*read.ID)
 
+	powered := d.Get("powered").(bool)
+	if powered {
+		_, _ = vmClient.Start(resGroup, name, nil)
+	} else {
+		_, _ = vmClient.PowerOff(resGroup, name, nil)
+	}
+
 	return resourceArmVirtualMachineRead(d, meta)
 }
 
