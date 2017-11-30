@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/arm/compute"
+	"github.com/davecgh/go-spew/spew"
 	riviera "github.com/jen20/riviera/azure"
 	"github.com/r3labs/terraform/helper/hashcode"
 	"github.com/r3labs/terraform/helper/schema"
@@ -31,7 +32,9 @@ func resourceArmVirtualMachine() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
-
+			"powered": {
+				Type: schema.TypeBool,
+			},
 			"location": locationSchema(),
 
 			"resource_group_name": {
@@ -618,8 +621,10 @@ func resourceArmVirtualMachineRead(d *schema.ResourceData, meta interface{}) err
 	}
 	resGroup := id.ResourceGroup
 	name := id.Path["virtualMachines"]
+	var iv compute.InstanceViewTypes
+	iv = "instanceview"
 
-	resp, err := vmClient.Get(resGroup, name, "")
+	resp, err := vmClient.Get(resGroup, name, iv)
 
 	if err != nil {
 		if resp.StatusCode == http.StatusNotFound {
@@ -627,6 +632,21 @@ func resourceArmVirtualMachineRead(d *schema.ResourceData, meta interface{}) err
 			return nil
 		}
 		return fmt.Errorf("Error making Read request on Azure Virtual Machine %s: %s", name, err)
+	}
+
+	code := ""
+	if resp.InstanceView != nil {
+		statuses := *resp.InstanceView.Statuses
+		if len(statuses) > 0 {
+			code = *statuses[len(statuses)-1].Code
+			spew.Dump(code)
+		}
+	}
+
+	if code == "PowerState/deallocated" {
+		d.Set("powered", false)
+		// } else {
+		// 	d.Set("powered", true)
 	}
 
 	d.Set("name", resp.Name)
